@@ -312,8 +312,7 @@ export default function Home() {
                       <div className="flex space-x-2">
                         {(["small", "medium", "large"] as const).map((size) => (
                           <Button
-                            key={size}
-                            variant={modalSize === size ? "default" : "outline"}
+                            key={size} 
                             size="sm"
                             onClick={() => setModalSize(size)}
                           >

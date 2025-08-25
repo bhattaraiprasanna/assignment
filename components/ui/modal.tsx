@@ -205,8 +205,7 @@ export function ConfirmModal({
           <Button variant="outline" onClick={onClose}>
             {cancelText}
           </Button>
-          <Button
-            variant={variant === "destructive" ? "destructive" : "default"}
+          <Button 
             onClick={() => {
               onConfirm()
               onClose()

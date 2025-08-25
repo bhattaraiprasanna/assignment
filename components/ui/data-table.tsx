@@ -212,8 +212,7 @@ export function DataTable<T extends Record<string, any>>({
 
                   return (
                     <Button
-                      key={pageNum}
-                      variant={pagination.page === pageNum ? "default" : "outline"}
+                      key={pageNum} 
                       size="sm"
                       onClick={() => onPageChange?.(pageNum)}
                       className="w-8 h-8 p-0"
