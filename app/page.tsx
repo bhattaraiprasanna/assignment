@@ -219,24 +219,10 @@ export default function Home() {
       <div className="space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Component Library</h1>
+          <h1 className="text-4xl font-bold text-black">Component Library</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Professional, accessible, and reusable UI components built with TypeScript and Tailwind CSS
-          </p>
-          <div className="flex justify-center space-x-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary">3</div>
-              <div className="text-sm text-muted-foreground">Components</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary">100%</div>
-              <div className="text-sm text-muted-foreground">TypeScript</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary">A11y</div>
-              <div className="text-sm text-muted-foreground">Accessible</div>
-            </div>
-          </div>
+          </p> 
         </div>
 
         {/* Component Showcase */}
@@ -437,17 +423,9 @@ export default function Home() {
 
           {/* Playground Tab */}
           <TabsContent value="playground" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Interactive Playground</CardTitle>
-                <CardDescription>Try out all components together in a realistic scenario</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="text-center space-y-4">
-                  <h3 className="text-lg font-medium">User Management Dashboard</h3>
-                  <p className="text-muted-foreground">
-                    This playground demonstrates how all components work together in a real application
-                  </p>
+            <Card> 
+              <CardContent >
+                <div className="text-center space-y-4 p-2.5"> 
                   <Button size="lg" onClick={() => setIsModalOpen(true)}>
                     Add New User
                   </Button>
