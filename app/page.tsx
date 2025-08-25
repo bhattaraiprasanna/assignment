@@ -390,7 +390,8 @@ export default function Home() {
                           >
                             <div className="flex items-center space-x-1">
                               <span>{column.label}</span>
-                              <ArrowUpDown className="h-4 w-4" />
+                              
+                      {column.key === 'firstName' && <ArrowUpDown className="h-4 w-4" />}
                             </div>
                           </th>
                         ))}
