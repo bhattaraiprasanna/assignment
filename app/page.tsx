@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Users, ShoppingCart, Zap, Palette } from "lucide-react"
 import Task1UserManagement from "@/components/task1-user-management" 
+import Task2CartManagement from "@/components/task2-cart-management"
 
 type TaskType = "overview" | "task1" | "task2" | "task3" | "task4"
 
@@ -14,32 +15,28 @@ const tasks = [
     title: "Reusable Component Library",
     description: "Advanced user management system with sorting, pagination, and form validation",
     icon: Users,
-    color: "bg-blue-500",
-    duration: "45 minutes",
+    color: "bg-blue-500", 
   },
   {
     id: "task2" as TaskType,
     title: "Complex State Management",
     description: "Shopping cart with optimistic updates, error recovery, and localStorage persistence",
     icon: ShoppingCart,
-    color: "bg-green-500",
-    duration: "45 minutes",
+    color: "bg-green-500", 
   },
   {
     id: "task3" as TaskType,
     title: "Performance Optimization",
     description: "React optimization techniques with large datasets and memoization",
     icon: Zap,
-    color: "bg-yellow-500",
-    duration: "30 minutes",
+    color: "bg-yellow-500", 
   },
   {
     id: "task4" as TaskType,
     title: "White-Label Configuration",
     description: "Customizable theming system with live preview and export functionality",
     icon: Palette,
-    color: "bg-purple-500",
-    duration: "30 minutes",
+    color: "bg-purple-500", 
   },
 ]
 
@@ -50,8 +47,8 @@ export default function Home() {
     switch (currentTask) {
       case "task1":
          return <Task1UserManagement />
-      // case "task2":
-      //   return <Task2CartManagement />
+      case "task2":
+        return <Task2CartManagement />
       // case "task3":
       //   return <Task3PerformanceOptimization />
       // case "task4":
@@ -78,7 +75,6 @@ export default function Home() {
                         </div>
                         <div className="flex-1">
                           <CardTitle className="text-xl text-black">{task.title}</CardTitle>
-                          <p className="text-sm text-muted-foreground">{task.duration}</p>
                         </div>
                       </div>
                     </CardHeader>
