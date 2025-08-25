@@ -160,6 +160,7 @@ export default function Home() {
           })
           setIsModalOpen(true)
         }}
+        className="text-gray-700 bg-gray-100 border-gray-300 hover:bg-gray-200 hover:border-gray-400"
       >
         Edit
       </Button>
@@ -170,6 +171,7 @@ export default function Home() {
           setSelectedUser(row)
           setIsConfirmModalOpen(true)
         }}
+        className="text-gray-700 bg-gray-100 border-gray-300 hover:bg-gray-200 hover:border-gray-400"
       >
         Delete
       </Button>
@@ -179,7 +181,9 @@ export default function Home() {
   const StatusBadge = ({ status }: { status: string }) => (
     <span
       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-        status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+        status === "Active" 
+          ? "bg-green-100 text-green-700" 
+          : "bg-red-100 text-red-700"
       }`}
     >
       {status}

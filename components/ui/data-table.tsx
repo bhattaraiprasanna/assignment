@@ -71,10 +71,10 @@ export function DataTable<T extends Record<string, any>>({
   const LoadingSkeleton = () => (
     <div className="animate-pulse">
       {Array.from({ length: 5 }).map((_, index) => (
-        <div key={index} className="flex space-x-4 py-4 border-b border-border">
+        <div key={index} className="flex space-x-4 py-4 border-b border-gray-200">
           {columns.map((column) => (
             <div key={column.key} className="flex-1">
-              <div className="h-4 bg-muted rounded"></div>
+              <div className="h-4 bg-gray-200 rounded"></div>
             </div>
           ))}
         </div>
@@ -84,8 +84,8 @@ export function DataTable<T extends Record<string, any>>({
 
   const EmptyState = () => (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-        <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+        <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -94,22 +94,22 @@ export function DataTable<T extends Record<string, any>>({
           />
         </svg>
       </div>
-      <p className="text-muted-foreground text-lg">{emptyMessage}</p>
+      <p className="text-gray-500 text-lg">{emptyMessage}</p>
     </div>
   )
 
   return (
-    <div className={`bg-card rounded-lg border border-border overflow-hidden ${className}`}>
+    <div className={`bg-white rounded-lg border border-gray-200 overflow-hidden ${className}`}>
       {/* Table Header */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-muted/50">
+          <thead className="bg-gray-50">
             <tr>
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`px-6 py-4 text-left text-sm font-medium text-muted-foreground uppercase tracking-wider ${
-                    column.sortable ? "cursor-pointer hover:bg-muted/70 select-none" : ""
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-700 uppercase tracking-wider ${
+                    column.sortable ? "cursor-pointer hover:bg-gray-100 select-none" : ""
                   } ${column.className || ""}`}
                   onClick={() => column.sortable && handleSort(column.key)}
                   role={column.sortable ? "button" : undefined}
@@ -146,7 +146,7 @@ export function DataTable<T extends Record<string, any>>({
               ))}
             </tr>
           </thead>
-          <tbody className="bg-card divide-y divide-border">
+          <tbody className="bg-white divide-y divide-gray-200">
             {loading ? (
               <tr>
                 <td colSpan={columns.length} className="p-0">
@@ -161,11 +161,11 @@ export function DataTable<T extends Record<string, any>>({
               </tr>
             ) : (
               data.map((row, index) => (
-                <tr key={index} className="hover:bg-muted/30 transition-colors" role="row">
+                <tr key={index} className="hover:bg-gray-50 transition-colors" role="row">
                   {columns.map((column) => (
                     <td
                       key={column.key}
-                      className={`px-6 py-4 whitespace-nowrap text-sm text-foreground ${column.className || ""}`}
+                      className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${column.className || ""}`}
                       role="cell"
                     >
                       {column.render ? column.render(row) : row[column.key]}
@@ -180,9 +180,9 @@ export function DataTable<T extends Record<string, any>>({
 
       {/* Pagination */}
       {pagination && !loading && data.length > 0 && (
-        <div className="bg-card px-6 py-4 border-t border-border">
+        <div className="bg-white px-6 py-4 border-t border-gray-200">
           <div className="flex items-center justify-between">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-700">
               Showing {startItem} to {endItem} of {pagination.total} results
             </div>
             <div className="flex items-center space-x-2">
@@ -192,6 +192,7 @@ export function DataTable<T extends Record<string, any>>({
                 onClick={() => onPageChange?.(pagination.page - 1)}
                 disabled={pagination.page <= 1}
                 aria-label="Previous page"
+                className="text-gray-700 bg-white border-gray-300 hover:bg-gray-50"
               >
                 <ChevronLeftIcon className="w-4 h-4" />
                 Previous
@@ -215,7 +216,11 @@ export function DataTable<T extends Record<string, any>>({
                       key={pageNum} 
                       size="sm"
                       onClick={() => onPageChange?.(pageNum)}
-                      className="w-8 h-8 p-0"
+                      className={`w-8 h-8 p-0 ${
+                        pagination.page === pageNum
+                          ? "bg-black text-white hover:bg-gray-800"
+                          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                      }`}
                       aria-label={`Page ${pageNum}`}
                       aria-current={pagination.page === pageNum ? "page" : undefined}
                     >
@@ -231,6 +236,7 @@ export function DataTable<T extends Record<string, any>>({
                 onClick={() => onPageChange?.(pagination.page + 1)}
                 disabled={pagination.page >= totalPages}
                 aria-label="Next page"
+                className="text-gray-700 bg-white border-gray-300 hover:bg-gray-50"
               >
                 Next
                 <ChevronRightIcon className="w-4 h-4" />
