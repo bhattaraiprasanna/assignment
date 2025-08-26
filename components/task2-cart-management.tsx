@@ -63,34 +63,59 @@ export default function CartManagement() {
     isLoading: false,
     errors: [],
   })
-  const [cartOpen, setCartOpen] = useState(false) 
+  const [cartOpen, setCartOpen] = useState(false)
   const [discountInput, setDiscountInput] = useState("")
-
-  // Load cart from localStorage on mount
+  const [isInitialLoad, setIsInitialLoad] = useState(true) 
+ 
   useEffect(() => {
     const savedCart = localStorage.getItem("shopping-cart")
     if (savedCart) {
       try {
         const parsed = JSON.parse(savedCart)
-        setCartState((prev) => ({ ...prev, items: parsed.items || [] }))
+        setCartState((prev) => ({
+          ...prev,
+          items: parsed.items || [],
+          discountCode: parsed.discountCode || "",
+          discountAmount: parsed.discountAmount || 0,
+        }))
       } catch (error) {
         console.error("Failed to load cart from localStorage:", error)
+        setCartState((prev) => ({
+          ...prev,
+          errors: ["Failed to load cart data"],
+        }))
       }
     }
+    setIsInitialLoad(false)  
   }, [])
 
-  // Save cart to localStorage whenever items change
   useEffect(() => {
-    localStorage.setItem("shopping-cart", JSON.stringify({ items: cartState.items }))
-    calculateTotals()
-  }, [cartState.items, cartState.discountAmount])
+    if (!isInitialLoad) { 
+      try {
+        localStorage.setItem(
+          "shopping-cart",
+          JSON.stringify({
+            items: cartState.items,
+            discountCode: cartState.discountCode,
+            discountAmount: cartState.discountAmount,
+          })
+        )
+      } catch (error) {
+        console.error("Failed to save cart to localStorage:", error)
+        setCartState((prev) => ({
+          ...prev,
+          errors: ["Failed to save cart data"],
+        }))
+      }
+    }
+  }, [cartState.items, cartState.discountCode, cartState.discountAmount, isInitialLoad])
 
   const calculateTotals = useCallback(() => {
     const subtotal = cartState.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
     const discountAmount = subtotal * cartState.discountAmount
     const discountedSubtotal = subtotal - discountAmount
     const tax = discountedSubtotal * 0.08 // 8% tax
-    const shipping = discountedSubtotal > 50 ? 0 : 9.99 
+    const shipping = discountedSubtotal > 50 ? 0 : 9.99
     const total = discountedSubtotal + tax + shipping
 
     setCartState((prev) => ({
@@ -98,6 +123,12 @@ export default function CartManagement() {
       totals: { subtotal, tax, shipping, total },
     }))
   }, [cartState.items, cartState.discountAmount])
+
+  useEffect(() => {
+    if (!isInitialLoad) {
+      calculateTotals()
+    }
+  }, [calculateTotals, isInitialLoad])
 
   const addToCart = (product: Product) => {
     setCartState((prev) => {
@@ -109,7 +140,6 @@ export default function CartManagement() {
       } else {
         newItems = [...prev.items, { ...product, quantity: 1 }]
       }
- 
 
       return { ...prev, items: newItems, errors: [] }
     })
@@ -156,9 +186,7 @@ export default function CartManagement() {
   } 
 
   const handleCheckout = () => {
-    setCartState((prev) => ({ ...prev, isLoading: true }))
-
-    // Simulate checkout process
+    setCartState((prev) => ({ ...prev, isLoading: true })) 
     setTimeout(() => {
       setCartState((prev) => ({
         ...prev,
@@ -167,6 +195,7 @@ export default function CartManagement() {
         discountCode: "",
         discountAmount: 0,
       }))
+      localStorage.removeItem("shopping-cart") // Clear localStorage on checkout
       setCartOpen(false)
       alert("Checkout successful!")
     }, 2000)
@@ -184,17 +213,17 @@ export default function CartManagement() {
         {sampleProducts.map((product) => (
           <Card key={product.id} className="overflow-hidden">
             <div className="aspect-square overflow-hidden">
-                             <Image
-                 src={product.image || "/product-placeholder.svg"}
-                 alt={product.name}
-                 width={300}
-                 height={300}
-                 className="w-full h-full object-cover hover:scale-105 transition-transform"
-                 onError={(e) => {
-                   const target = e.target as HTMLImageElement;
-                   target.src = "/product-placeholder.svg";
-                 }}
-               />
+              <Image
+                src={product.image || "/product-placeholder.svg"}
+                alt={product.name}
+                width={300}
+                height={300}
+                className="w-full h-full object-cover hover:scale-105 transition-transform"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/product-placeholder.svg";
+                }}
+              />
             </div>
             <CardContent className="p-4">
               <h3 className="font-bold text-black">{product.name}</h3>
@@ -209,16 +238,14 @@ export default function CartManagement() {
           </Card>
         ))}
       </div>
-
-      {/* Cart Button */}
+ 
       <div className="fixed bottom-6 right-6">
         <Button onClick={() => setCartOpen(true)} size="lg" className="rounded-full shadow-lg">
           <ShoppingCart className="h-5 w-5 mr-2" />
           Cart ({cartState.items.reduce((sum, item) => sum + item.quantity, 0)})
         </Button>
       </div>
-
-      {/* Cart Sidebar */}
+ 
       {cartOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/50" onClick={() => setCartOpen(false)} />
@@ -250,17 +277,17 @@ export default function CartManagement() {
                 ) : (
                   cartState.items.map((item) => (
                     <div key={item.id} className="flex items-center space-x-3 border border-gray-200 rounded-lg p-3">
-                                             <Image
-                         src={item.image || "/product-placeholder.svg"}
-                         alt={item.name}
-                         width={48}
-                         height={48}
-                         className="w-12 h-12 rounded object-cover"
-                         onError={(e) => {
-                           const target = e.target as HTMLImageElement;
-                           target.src = "/product-placeholder.svg";
-                         }}
-                       />
+                      <Image
+                        src={item.image || "/product-placeholder.svg"}
+                        alt={item.name}
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 rounded object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/product-placeholder.svg";
+                        }}
+                      />
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium truncate">{item.name}</h4>
                         <p className="text-sm text-muted-foreground">${item.price}</p>

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Users, ShoppingCart, Zap, Palette } from "lucide-react"
 import Task1UserManagement from "@/components/task1-user-management" 
 import Task2CartManagement from "@/components/task2-cart-management"
+import Task3PerformanceOptimization from "@/components/task3-performance-optimization"
 
 type TaskType = "overview" | "task1" | "task2" | "task3" | "task4"
 
@@ -49,8 +50,8 @@ export default function Home() {
          return <Task1UserManagement />
       case "task2":
         return <Task2CartManagement />
-      // case "task3":
-      //   return <Task3PerformanceOptimization />
+      case "task3":
+       return <Task3PerformanceOptimization />
       // case "task4":
       //   return <Task4WhiteLabel />
       default:
